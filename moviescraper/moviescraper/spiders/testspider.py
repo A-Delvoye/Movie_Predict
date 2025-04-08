@@ -1,17 +1,17 @@
 import scrapy
 from moviescraper.items import MoviescraperItem
 
-class MoviespiderSpider(scrapy.Spider):
-    name = "moviespider"
+
+class TestspiderSpider(scrapy.Spider):
+    name = "testspider"
     allowed_domains = ["www.allocine.fr"]
     start_urls = ["https://www.allocine.fr/films/decennie-2010/"]
 
-
-
     def parse(self, response):
-        number_of_pages = int(response.css('div.pagination-item-holder span.button-md.item::text').getall()[-1])
-        # number_of_pages=10
+        # number_of_pages = int(response.css('div.pagination-item-holder span.button-md.item::text').getall()[-1])
+        number_of_pages=5
         movies = response.css('div.card.entity-card.entity-card-list.cf')
+
 
         for movie in movies:
             title = movie.css('a.meta-title-link ::text').get()
@@ -43,12 +43,14 @@ class MoviespiderSpider(scrapy.Spider):
             
             movie_url =movie.css('a.meta-title-link').attrib['href']
             movie_number = ''.join([x for x in movie_url if x.isdigit()])
-            movieItem['title'] = title
-            movieItem['release_date']=release_date
-            movieItem['duration'] = duration
-            movieItem['categories'] = categories_item
-            movieItem['realisator_de'] = realisator
-            movieItem['movie_number']=movie_number
+            movieItem['title'] = title,
+            movieItem['release_date']=release_date,
+            movieItem['duration'] = duration,
+            movieItem['categories'] = categories_item,
+            movieItem['realisator_de'] = realisator,
+            movieItem['movie_number']=movie_number,
+            print(movieItem['movie_number'])
+            print(type(movieItem['movie_number']))
             yield response.follow(
                 url='https://www.allocine.fr'+movie_url,
                 callback= self.parse_movie,
@@ -69,11 +71,14 @@ class MoviespiderSpider(scrapy.Spider):
     def parse_trailer(self, response):
         movie = response.css('div.media-info-item.icon.icon-eye')
         movieItem = response.meta['item']
+        print('TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT')
+        print(movieItem['sortie_france'])
+        print(response.url)
         if movieItem['sortie_france']:
             trailer_views = movie.css('::text').get().strip()
             movieItem["trailer_views"] = trailer_views
             yield response.follow(
-                    url='https://www.allocine.fr/film/fichefilm-'+movieItem['movie_number']+'/box-office/',
+                    url='https://www.allocine.fr/film/fichefilm-'+movieItem['movie_number'][0]+'/box-office/',
                     callback= self.parse_box_office,
                     meta={'item': movieItem}
                 )
@@ -83,6 +88,7 @@ class MoviespiderSpider(scrapy.Spider):
 
     def parse_movie(self,response):
         movieItem = response.meta['item']
+        print('MOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOVVIIIIIIIIIIIIIIIIIIIEEEE')
         producer=response.xpath('//div[contains(@class, "meta-body-oneline")]/span[contains(text(), "Par")]/following-sibling::span/text()').getall()
         awards = response.xpath('//div[contains(@class, "item")]/span[contains(text(), "Récompenses")]/following-sibling::span/text()').get(default="").strip()
         country = response.css('section.ovw-technical span.nationality ::text').getall()
@@ -111,6 +117,7 @@ class MoviespiderSpider(scrapy.Spider):
 
     def parse_box_office(self, response):
         movieItem = response.meta['item']
+        print('FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF')
         tables= response.css('section.section')
         for index, table in enumerate(tables):
             table_box_office = table.css('td.responsive-table-column.second-col.col-bg::text').getall()
@@ -131,3 +138,5 @@ class MoviespiderSpider(scrapy.Spider):
         movieItem['US_first_week'] = US_first_week
 
         yield movieItem
+
+

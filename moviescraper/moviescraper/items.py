@@ -10,7 +10,9 @@ class MoviescraperItem(Item):
     categories = Field()
     realisator_de = Field()
     scenario_par = Field()
-    actors = Field()
+    actor1 = Field()
+    actor2 = Field()
+    actor3 = Field()
     awards=Field()
     budget = Field()
     movie_number=Field()
@@ -19,5 +21,6 @@ class MoviescraperItem(Item):
     trailer_views = Field()
     production_year=Field()
     distributor=Field()
+    sortie_france=Field()
 
 
