@@ -4,19 +4,18 @@ from moviescraper.items import MoviescraperItem
 class MoviespiderSpider(scrapy.Spider):
     name = "moviespider"
     allowed_domains = ["www.allocine.fr"]
-    start_urls = ["https://www.allocine.fr/films/decennie-2010/"]
-
+    # start_urls = ["https://www.allocine.fr/films/decennie-2010/", "https://www.allocine.fr/films/decennie-2020/"]
+    start_urls=['https://www.allocine.fr/films/alphabetique/decennie-2020/?page=46']
 
 
     def parse(self, response):
-        number_of_pages = int(response.css('div.pagination-item-holder span.button-md.item::text').getall()[-1])
-        # number_of_pages=10
+        # number_of_pages = int(response.css('div.pagination-item-holder span.button-md.item::text').getall()[-1])
+        # number_of_pages=5
         movies = response.css('div.card.entity-card.entity-card-list.cf')
 
         for movie in movies:
             title = movie.css('a.meta-title-link ::text').get()
             movieItem = MoviescraperItem()
-            release_date = movie.css('div.meta-body-item.meta-body-info span.date::text').get()
             duration = movie.css('div.meta-body-item.meta-body-info *::text').getall()[4].strip()
             categories = movie.css('div.meta-body-item.meta-body-info span.dark-grey-link::text').getall()
             categories_item = ""
@@ -41,10 +40,9 @@ class MoviespiderSpider(scrapy.Spider):
                 case _:
                     pass                
             
-            movie_url =movie.css('a.meta-title-link').attrib['href']
+            movie_url = movie.css('a.meta-title-link').attrib['href']
             movie_number = ''.join([x for x in movie_url if x.isdigit()])
             movieItem['title'] = title
-            movieItem['release_date']=release_date
             movieItem['duration'] = duration
             movieItem['categories'] = categories_item
             movieItem['realisator_de'] = realisator
@@ -56,15 +54,15 @@ class MoviespiderSpider(scrapy.Spider):
             )
 
 
-        for i in range(number_of_pages):
-            url_of_the_page = response.url
-            if "?" in url_of_the_page:
-                next_page_url = MoviespiderSpider.start_urls[0] + f'?page={i+2}'
-                yield response.follow(next_page_url, callback = self.parse)
+        # for i in range(number_of_pages):
+        #     url_of_the_page = response.url
+        #     if "?" in url_of_the_page:
+        #         next_page_url = MoviespiderSpider.start_urls[0] + f'?page={i+2}'
+        #         yield response.follow(next_page_url, callback = self.parse)
 
-            else:
-                next_page_url = MoviespiderSpider.start_urls[0] + f'?page={i+2}'
-                yield response.follow(next_page_url, callback = self.parse)
+        #     else:
+        #         next_page_url = MoviespiderSpider.start_urls[0] + f'?page={i+2}'
+        #         yield response.follow(next_page_url, callback = self.parse)
 
     def parse_trailer(self, response):
         movie = response.css('div.media-info-item.icon.icon-eye')
@@ -83,6 +81,7 @@ class MoviespiderSpider(scrapy.Spider):
 
     def parse_movie(self,response):
         movieItem = response.meta['item']
+        release_date = response.css('div.meta-body-item.meta-body-info span.date ::text').get()
         producer=response.xpath('//div[contains(@class, "meta-body-oneline")]/span[contains(text(), "Par")]/following-sibling::span/text()').getall()
         awards = response.xpath('//div[contains(@class, "item")]/span[contains(text(), "Récompenses")]/following-sibling::span/text()').get(default="").strip()
         country = response.css('section.ovw-technical span.nationality ::text').getall()
@@ -92,6 +91,7 @@ class MoviespiderSpider(scrapy.Spider):
         annee = response.xpath('//div[contains(@class, "item")]/span[contains(text(), "Année de production")]/following-sibling::span/text()').get()
         sortie_france = True if response.xpath('//div[contains(@class, "item")]/span[contains(text(), "Box Office France")]/following-sibling::span/text()').get()  else False
         critics_rating = response.css('div.rating-holder.rating-holder-3 span.stareval-note ::text').get()
+        movieItem['release_date']= release_date
         movieItem['distributor']=distributor
         movieItem['awards']=awards
         movieItem['production_year']=annee
@@ -112,22 +112,41 @@ class MoviespiderSpider(scrapy.Spider):
     def parse_box_office(self, response):
         movieItem = response.meta['item']
         tables= response.css('section.section')
-        for index, table in enumerate(tables):
-            table_box_office = table.css('td.responsive-table-column.second-col.col-bg::text').getall()
-            if table_box_office:
-                if len(table_box_office)>1:
-                    n_first_week = max(int(table_box_office[0].strip().replace(" ", "")), int(table_box_office[1].strip().replace(" ", "")))
-                else:
-                    n_first_week= table_box_office[0].strip().replace(" ","")
-            else:
-                n_first_week = ""
 
-            if index == 1:
-                France_first_week = n_first_week
-            elif index ==2:
-                US_first_week = n_first_week
+        for table in tables:
+            table_box_office = table.css('td.responsive-table-column.second-col.col-bg::text').getall()
+            if 'Box Office France' in str(table.getall()):
+                if table_box_office:
+                    if len(table_box_office)>1:
+                        movieItem['France_first_week'] = max(int(table_box_office[0].strip().replace(" ", "")), int(table_box_office[1].strip().replace(" ", "")))
+                    else:
+                        movieItem['France_first_week']= table_box_office[0].strip().replace(" ","")
+
+            if 'Box Office US' in str(table.getall()):
+                if table_box_office:
+                    if len(table_box_office)>1:
+                        movieItem['US_first_week'] = max(int(table_box_office[0].strip().replace(" ", "")), int(table_box_office[1].strip().replace(" ", "")))
+                    else:
+                        movieItem['US_first_week']= table_box_office[0].strip().replace(" ","")
+
+
+
+        # for index, table in enumerate(tables):
+        #     table_box_office = table.css('td.responsive-table-column.second-col.col-bg::text').getall()
+        #     if table_box_office:
+        #         if len(table_box_office)>1:
+        #             n_first_week = max(int(table_box_office[0].strip().replace(" ", "")), int(table_box_office[1].strip().replace(" ", "")))
+        #         else:
+        #             n_first_week= table_box_office[0].strip().replace(" ","")
+        #     else:
+        #         n_first_week = ""
+
+        #     if index == 1:
+        #         France_first_week = n_first_week
+        #     elif index ==2:
+        #         US_first_week = n_first_week
                 
-        movieItem['France_first_week'] = France_first_week
-        movieItem['US_first_week'] = US_first_week
+        # movieItem['France_first_week'] = France_first_week
+        # movieItem['US_first_week'] = US_first_week
 
         yield movieItem
