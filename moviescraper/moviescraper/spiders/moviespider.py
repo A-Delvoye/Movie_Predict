@@ -4,13 +4,24 @@ from moviescraper.items import MoviescraperItem
 class MoviespiderSpider(scrapy.Spider):
     name = "moviespider"
     allowed_domains = ["www.allocine.fr"]
-    # start_urls = ["https://www.allocine.fr/films/decennie-2010/", "https://www.allocine.fr/films/decennie-2020/"]
-    start_urls=['https://www.allocine.fr/films/alphabetique/decennie-2020/?page=46']
+    start_urls = ["https://www.allocine.fr/films/decennie-2000/", "https://www.allocine.fr/films/decennie-2010/", "https://www.allocine.fr/films/decennie-2020/"]
+    # start_urls=['https://www.allocine.fr/films/alphabetique/decennie-2020/?page=46']
 
 
     def parse(self, response):
-        # number_of_pages = int(response.css('div.pagination-item-holder span.button-md.item::text').getall()[-1])
-        # number_of_pages=5
+        # for start_url in self.start_urls:
+        number_of_pages = int(response.css('div.pagination-item-holder span.button-md.item::text').getall()[-1])
+            # for i in range(1, number_of_pages+1):
+        for i in range(1, number_of_pages):
+            next_page_url = response.url + f'?page={i}'
+
+            yield scrapy.Request(
+                url=next_page_url,
+                callback=self.parse_page
+            )
+
+    
+    def parse_page(self, response):
         movies = response.css('div.card.entity-card.entity-card-list.cf')
 
         for movie in movies:
@@ -54,15 +65,7 @@ class MoviespiderSpider(scrapy.Spider):
             )
 
 
-        # for i in range(number_of_pages):
-        #     url_of_the_page = response.url
-        #     if "?" in url_of_the_page:
-        #         next_page_url = MoviespiderSpider.start_urls[0] + f'?page={i+2}'
-        #         yield response.follow(next_page_url, callback = self.parse)
 
-        #     else:
-        #         next_page_url = MoviespiderSpider.start_urls[0] + f'?page={i+2}'
-        #         yield response.follow(next_page_url, callback = self.parse)
 
     def parse_trailer(self, response):
         movie = response.css('div.media-info-item.icon.icon-eye')

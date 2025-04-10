@@ -18,7 +18,7 @@ CLOSESPIDER_ERRORCOUNT = 1
 # USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36'
 USER_AGENT = "windows|Mozilla/5.0 (Windows; U; Windows NT 10.2; WOW64; en-US) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/53.0.1579.137 Safari/600"
 
-COOKIES_ENABLED = True
+COOKIES_ENABLED = False
 REDIRECT_ENABLED = True
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
@@ -28,14 +28,14 @@ DEFAULT_REQUEST_HEADERS = {
 }
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-CONCURRENT_REQUESTS = 512
+CONCURRENT_REQUESTS = 128
 
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
 # DOWNLOAD_DELAY = 3
 # The download delay setting will honor only one of:
-#CONCURRENT_REQUESTS_PER_DOMAIN = 16
+CONCURRENT_REQUESTS_PER_DOMAIN = 64
 #CONCURRENT_REQUESTS_PER_IP = 16
 
 # Disable cookies (enabled by default)
