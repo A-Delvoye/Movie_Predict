@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="text-xl font-bold mb-4">Historique des prédictions</h1>
+
+{% for week_label, predictions in grouped_predictions.items %}
+  <div class="mb-6">
+    <h2 class="text-lg font-semibold">{{ week_label }}</h2>
+    <ul class="list-disc ml-6">
+      {% for p in predictions %}
+        <li>
+          <strong>{{ p.title }}</strong> — {{ p.prediction }} places — {{ p.release_date }}
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+{% empty %}
+  <p>Pas de prédictions enregistrées pour le moment.</p>
+{% endfor %}
+
+{% endblock %}
+
+
+
+{% comment %} <h2>Historique de vos prédictions</h2>
+<ul>
+  {% for p in predictions %}
+    <li>{{ p.date }} - {{ p.title }} - {{ p.prediction_score|floatformat:2 }}</li>
+  {% endfor %}
+</ul>
+<a href="{% url 'home' %}">Accueil</a> {% endcomment %}

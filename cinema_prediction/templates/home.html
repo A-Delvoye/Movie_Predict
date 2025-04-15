@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Bienvenue sur FilmPredictor 🎬{% endblock %}
+{% block content %}
+<h2 class="text-2xl font-semibold mb-4">Bienvenue sur l'app de prédiction de films !</h2>
+<p>Cette application prédit le nombre de places vendues pour les prochains films à l'affiche.</p>
+
+{% if user.is_authenticated %}
+  <a href="{% url 'predict' %}">Voir les prédictions</a>
+  <a href="{% url 'history' %}">Historique</a>
+  <a href="{% url 'logout' %}">Déconnexion</a>
+{% else %}
+  <a href="{% url 'login' %}">Connexion</a> | <a href="{% url 'signup' %}">Créer un compte</a>
+{% endif %}
+{% endblock %}
+{% comment %} {% extends 'movies/base.html' %}
+
+{% block title %}Accueil - Cinéma Prédiction{% endblock %}
+
+{% block content %}
+<h2 class="text-2xl font-semibold mb-4">Bienvenue sur l'app de prédiction de films !</h2>
+<p>Cette application prédit le nombre de places vendues pour les prochains films à l'affiche.</p>
+{% endblock %} {% endcomment %}

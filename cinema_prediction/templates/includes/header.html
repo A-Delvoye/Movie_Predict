@@ -1,0 +1,37 @@
+<header class="bg-[#292E1E] text-[#FBFEF9] py-6 shadow-lg">
+    <div class="container mx-auto flex justify-between items-center px-4">
+        <div class="flex items-center space-x-3">
+            <span class="text-3xl">🎬</span>
+            <h1 class="text-2xl font-extrabold tracking-wide font-mono text-[#A63446]">
+                New is always better
+            </h1>
+        </div>
+        <nav class="space-x-6 text-lg">
+            <a href="{% url 'home' %}" class="hover:text-[#BC8034] transition">Accueil</a>
+            <a href="{% url 'predict' %}" class="hover:text-[#BC8034] transition">Prédictions</a>
+            <a href="{% url 'history' %}" class="hover:text-[#BC8034] transition">Historique</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'logout' %}" class="hover:text-[#BC8034] transition">Se déconnecter</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="hover:text-[#BC8034] transition">Se connecter</a>
+            {% endif %}
+        </nav>
+    </div>
+</header>
+
+
+
+{% comment %} <header class="bg-blue-600 text-white py-4">
+    <div class="container mx-auto flex justify-between items-center">
+        <h1 class="text-xl font-bold">🎥 Cinéma Prédiction</h1>
+        <nav>
+            <a href="{% url 'home' %}" class="px-3 hover:underline">Accueil</a>
+        </nav>
+    </div>
+</header>
+ {% endcomment %}
+
+
+
+
+

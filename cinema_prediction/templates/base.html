@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Cinéma Prédiction{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#FBFEF9] text-[#292E1E] min-h-screen flex flex-col justify-between">
+    {% include 'includes/header.html' %}
+    
+    <main class="container mx-auto p-4 flex-grow">
+        {% block content %}{% endblock %}
+    </main>
+
+    {% include 'includes/footer.html' %}
+</body>
+</html>

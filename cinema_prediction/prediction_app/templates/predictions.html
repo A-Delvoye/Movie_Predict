@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Résultats des prédictions{% endblock %}
+
+
+{% block content %}
+  {% comment %} <h2>Résultats des prédictions</h2> {% endcomment %}
+
+{% if predictions %}
+  <ul style="list-style: none; padding: 0;">
+    {% for movie in predictions %}
+      <li style="margin-bottom: 2em;">
+        <img src="{{ movie.url_image }}" alt="Affiche de {{ movie.title }}" width="150" style="float:left; margin-right: 20px;">
+        <strong>{{ movie.title }}</strong><br>
+        Places prédites : <strong>{{ movie.prediction }}</strong>
+        <div style="clear: both;"></div>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <form method="post">{% csrf_token %}
+    <button type="submit">Lancer les prédictions</button>
+  </form>
+{% endif %}
+
+
+<p><a href="{% url 'home' %}">Accueil</a></p>
+{% endblock %}
+{% comment %} <h2>Résultats des prédictions</h2>
+{% if predictions %}
+  <ul>
+    {% for movie in predictions %}
+      <li>{{ movie.title }} ({{ movie.release_date }}) - Score : {{ movie.prediction_score|floatformat:2 }}</li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <form method="post">{% csrf_token %}
+    <button type="submit">Lancer les prédictions</button>
+  </form>
+{% endif %}
+<a href="{% url 'home' %}">Accueil</a> {% endcomment %}
