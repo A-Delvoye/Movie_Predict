@@ -6,3 +6,6 @@ pyjwt
 python-dotenv
 pydantic[email]
 alembic
+requests
+dotenv
+xgboost
