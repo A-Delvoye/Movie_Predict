@@ -1,6 +1,7 @@
 import cloudpickle as pkl
 import pandas as pd
 import os
+import numpy as np
 
 def load_model(model_path):
     with open(model_path, 'rb') as f:
@@ -87,7 +88,7 @@ def encode_casting(df, columns):
 
 def predict(model,df,columns,csv_columns):
     pred_df = df[csv_columns]
-    pred_df['prediction'] = model.predict(df[columns])
+    pred_df['prediction'] = np.round(model.predict(df[columns])).astype(int)
     pred_df = pred_df.sort_values('prediction',ascending=False).head(10)
     return pred_df
 

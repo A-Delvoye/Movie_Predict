@@ -12,6 +12,7 @@ router = APIRouter()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 @router.post("/predict")
+#need to add security feature, anyone can make a prediction
 async def predict():
     pred_df = start_prediction()
     pred_df = pred_df.replace([np.nan, np.inf, -np.inf], None)
