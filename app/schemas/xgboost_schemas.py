@@ -1,6 +1,7 @@
 # from pydantic import BaseModel, Field
 from typing import Optional
 import pickle
+import xgboost
 
 with open("app/data/model_bundle.pkl", "rb") as f:
     model = pickle.load(f)
