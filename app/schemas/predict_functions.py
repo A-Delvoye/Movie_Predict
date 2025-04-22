@@ -2,8 +2,10 @@ import cloudpickle as pkl
 import pandas as pd
 import os
 import numpy as np
+from app.config import PATH_MODEL_WEIGHT, PATH_OUTPUT_CSV_SCRAPING
 
 def load_model(model_path):
+    print("LOAD MODEL")
     with open(model_path, 'rb') as f:
         bundle = pkl.load(f)
     return bundle
@@ -94,15 +96,18 @@ def predict(model,df,columns,csv_columns):
 
 
 def start_prediction():
-    bundle = load_model('/home/david/cinemapredict/Movie_Predict/app/data/model_bundle_final.pkl')
+    bundle = load_model(str(PATH_MODEL_WEIGHT))
     columns = bundle['features']
     model = bundle['model']
-
-    data = load_weekly_scraping("/home/david/cinemapredict/Movie_Predict/app/data")
+    data = load_weekly_scraping(str(PATH_OUTPUT_CSV_SCRAPING))
     csv_columns = data.columns
     cleaned_data = data_cleaning(data, columns)
     result = predict(model,cleaned_data,columns, csv_columns)
 
     return result
 
+
+if __name__ =="__main__":
+    # pour tester avec python -m app.schemas.predict_functions
+    print(start_prediction())
 
