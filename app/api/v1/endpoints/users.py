@@ -84,19 +84,15 @@ def get_password_hash(password: str) -> str:
 
 @router.post("/admin/users")
 async def register_user(name: str, email: str, password: str, role: str, db: Session = Depends(get_session)):
-    # Check if user already exists
+
     statement = select(User).where(User.email == email)
     existing_user = db.execute(statement).first()
     if existing_user:
         raise HTTPException(status_code=400, detail="Email already registered")
 
-    # Hash the password
     hashed_password = get_password_hash(password)
-
-    # Create a new user
     new_user = User(name=name, email=email, password=hashed_password, role=role, activation=False)
-    
-    # Add user to database
+
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
