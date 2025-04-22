@@ -1,27 +1,19 @@
 import os
 import pickle
-# import requests
-# from dotenv import load_dotenv
 from fastapi.security import OAuth2PasswordBearer
 from fastapi import APIRouter, Depends, HTTPException, status
 import xgboost
 
-# oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")
-# load_dotenv(dotenv_path=".env")
-
-# SECRET_KEY = os.getenv("SECRET_KEY")
-# BASE_URL = "http://localhost:8080"
-# ENV_FILE = ".env"
-
-
 router = APIRouter()
-with open("app/data/model_bundle.pkl", "rb") as f:
+with open("app/data/model_bundle2.pkl", "rb") as f:
     model = pickle.load(f)
 print("✅ Modèle chargé avec succès")
 
 
 
-
+@router.post("/predict", response_model=dict)
+async def predict(data: LoanApplication, db: Session = Depends(get_db), user_id: int = Depends(get_db)):
+    """Endpoint pour prédire l'approbation d'un prêt sans token"""
 
 
 
