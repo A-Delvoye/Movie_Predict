@@ -9,3 +9,5 @@ alembic
 requests
 dotenv
 xgboost
+pandas
+cloudpickle
