@@ -3,10 +3,12 @@ from scrapy.utils.project import get_project_settings
 
 
 def run_spider(
-    spider_name: str,
+    spider_name: str,    
     output_name: str,
 ) -> None:
+
     settings = get_project_settings()
+
     settings.set("FEED_URI", output_name)
     process = CrawlerProcess(settings)
     process.crawl(spider_name)
