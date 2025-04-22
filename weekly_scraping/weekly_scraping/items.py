@@ -1,0 +1,20 @@
+from scrapy.item import Item, Field
+
+class MoviescraperItem(Item):
+    title = Field()
+    release_date = Field()
+    movie_number = Field()
+    realisator = Field()
+    categories = Field()
+    country = Field()
+    producer = Field()
+    duration = Field()
+    awards = Field()
+    budget = Field()
+    year = Field()
+    distributor = Field()
+    image_url = Field()
+    synospis = Field()
+    trailer_views = Field()
+    casting = Field()
+    trailer_url = Field()
