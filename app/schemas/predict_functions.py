@@ -104,5 +104,4 @@ def start_prediction():
 
     return result
 
-print(start_prediction())
 

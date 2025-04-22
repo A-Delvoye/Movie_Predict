@@ -11,3 +11,4 @@ dotenv
 xgboost
 pandas
 cloudpickle
+gunicorn
