@@ -88,7 +88,8 @@ def encode_casting(df, columns):
 
 def predict(model,df,columns,csv_columns):
     pred_df = df[csv_columns]
-    pred_df['prediction'] = np.round(model.predict(df[columns])/2000).astype(int)
+    pred_df['prediction'] = np.round(model.predict(df[columns])/14000).astype(int)
+    pred_df = pred_df[pred_df['production_year']>2023]
     pred_df = pred_df.sort_values('prediction',ascending=False).head(10)
     return pred_df
 
