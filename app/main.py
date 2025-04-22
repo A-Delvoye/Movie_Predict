@@ -1,7 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from typing import List
 import uvicorn
-# from app.schemas import 
 from contextlib import asynccontextmanager
 from app.api.v1.endpoints import auth, users, prediction
 from app.db.session import engine
@@ -12,7 +11,7 @@ app = FastAPI(title="Movie Predict API",
 
 app.include_router(auth.router, prefix="/api/v1", tags=["auth"])
 app.include_router(users.router, prefix="/api/v1", tags=["users"])
-app.include_router(users.router, prefix="/api/v1", tags=["prediction"])
+app.include_router(prediction.router, prefix="/api/v1", tags=["prediction"])
 
 
 @app.get("/")
@@ -22,25 +21,3 @@ def home():
     This endpoint serves as a simple health check and provides a welcome message.
     """
     return {"message": "APIBanque - Bienvenue sur l'API de prédiction de films"}
-
-
-
-# @app.post("/predict", response_model=FilmPredictionResponse)
-# async def predict_affluence(films: List[FilmInput]):
-#     """
-#     Prédit l'affluence pour une liste de films.
-    
-#     Chaque film est spécifié avec ses métadonnées comme les acteurs, réalisateurs, etc.
-#     """
-#     try:
-#         results = []
-#         for film in films:
-#             prediction = predict_film_affluence(film)
-#             results.append({
-#                 "title": film.title if hasattr(film, "title") else "Unknown",
-#                 "predicted_affluence": prediction
-#             })
-        
-#         return {"predictions": results}
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail=str(e))
