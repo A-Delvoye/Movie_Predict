@@ -1,7 +1,7 @@
 from django.db import models
 
 class Movies(models.Model):
-    id                  = models.IntegerField(primary_key=True)
+    # id                  = models.IntegerField(primary_key=True)
     title               = models.CharField(max_length=255)
     prediction          = models.IntegerField(null=True, blank=True)
     release_date        = models.DateField(null=True, blank=True)
@@ -23,7 +23,7 @@ class Movies(models.Model):
     awards              = models.IntegerField(null=True, blank=True) # tuple [prix,nominations]?
     budget              = models.FloatField(null=True, blank=True)
     country             = models.CharField(max_length=255, null=True, blank=True)  # Format pays1, pays 2 ...
-    selection           = models.IntegerField(blank=True, null=True)
+    # selection           = models.IntegerField(blank=True, null=True)
     # critics_rating      = models.FloatField(null=True, blank=True)
     # movie_number        = models.IntegerField(null=True, blank=True)
 
