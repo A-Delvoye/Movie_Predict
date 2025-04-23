@@ -6,7 +6,9 @@ base_dir = Path(__file__).resolve().parent.parent
 print('BASE_DIR JSON2DB')
 print('base_dir :', base_dir)
 # Chemins relatifs
-json_path = base_dir / 'prediction_app' / 'prediction_result.json'
+# json_path = base_dir / 'prediction_app' / 'prediction_result.json'
+json_path = base_dir / 'prediction_app' / 'weekly.json'
+
 print('json_path :',json_path)
 db_path = base_dir / 'db.sqlite3'
 print('db_path :', db_path)
