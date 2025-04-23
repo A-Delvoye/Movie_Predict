@@ -8,7 +8,8 @@ from django.conf import settings
 from dotenv import load_dotenv
 import sqlite3
 import requests
-
+import json
+import os
 
 load_dotenv()
 
@@ -31,8 +32,13 @@ def prediction_view(request):
         response = requests.post(API_PREDICTION_URL, headers=headers, json = payload)
         prediction_data = response.json()
         print(50*'*')
-        print(prediction_data)
-        # prediction_data.to_csv('weekly.json')
+        # print(prediction_data)
+        # Exporter dans le répertoire courant
+        file_path = os.path.join(os.getcwd(), 'prediction_app/prediction_result.json')
+        with open(file_path, 'w') as f:
+            json.dump(prediction_data, f, indent=4)
+
+        print(f"Fichier JSON sauvegardé à : {file_path}")
     except requests.exceptions.RequestException as e:
         print(f"Erreur lors de l'appel à l'API : {e}")
         prediction_data = {"error": "Impossible de récupérer les données de prédiction."}
