@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+ {% extends "base.html" %}
 
 {% block title %}Résultats des prédictions{% endblock %}
 
@@ -10,9 +10,13 @@
   <ul style="list-style: none; padding: 0;">
     {% for movie in predictions %}
       <li style="margin-bottom: 2em;">
-        <img src="{{ movie.url_image }}" alt="Affiche de {{ movie.title }}" width="150" style="float:left; margin-right: 20px;">
+        <img src="{{ movie.image_url }}" alt="Affiche de {{ movie.title }}" width="150" style="float:left; margin-right: 20px;">
         <strong>{{ movie.title }}</strong><br>
-        Places prédites : <strong>{{ movie.prediction }}</strong>
+        Places prédites : <strong>{{ movie.prediction }}</strong><br>
+        <br>
+        Synospis : <strong>{{ movie.synospis }}</strong><br>
+        <br>
+        Casting : <strong>{{ movie.casting }}</strong><br> 
         <div style="clear: both;"></div>
       </li>
     {% endfor %}

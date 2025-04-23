@@ -5,56 +5,69 @@ import pandas as pd
 from datetime import datetime
 from collections import defaultdict
 from django.conf import settings
-import os
-import csv
+from dotenv import load_dotenv
+import sqlite3
+import requests
 
 
-# def home(request):
-#     return render(request, 'home.html')
+load_dotenv()
 
+API_PREDICTION_URL = "http://127.0.0.1:8001/api/v1/predict"
+API_BASE_URL = "http://127.0.0.1:8001"
+API_USER_ID = "JeremyCinema"
+email = "cinema@films.fr"
+password = "cinema"
 
 @login_required
 def prediction_view(request):
-    predictions = []
-    if request.method == 'POST':
-        # Lire les prédictions depuis un fichier CSV
-        # file_path = os.path.join(settings.BASE_DIR, 'weekly_predict.csv')
-        file_path = settings.BASE_DIR / 'prediction_app' / 'weekly_predict.csv'
-        df = pd.read_csv(file_path)
+    headers = {
+            "Content-Type": "application/json"}
+    payload = {
+        "user_id": API_USER_ID  
+    }
 
-        for _, row in df.iterrows():
-            prediction = Movies.objects.create(
-                # user=request.user,
-                title=row['title'],
-                url_image=row['image_url'],
-                release_date = row['release_date'],
-                prediction=row['places_predites'],
-                
-            )
-            predictions.append(prediction)
-    predictions_sorted = sorted(predictions, key=lambda x: x.prediction, reverse=True)
-    return render(request, 'predictions.html', {'predictions': predictions_sorted})
+    try:
+    # Envoi de la requête à l'API FastAPI
+        response = requests.post(API_PREDICTION_URL, headers=headers, json = payload)
+        prediction_data = response.json()
+        print(50*'*')
+        print(prediction_data)
+        # prediction_data.to_csv('weekly.json')
+    except requests.exceptions.RequestException as e:
+        print(f"Erreur lors de l'appel à l'API : {e}")
+        prediction_data = {"error": "Impossible de récupérer les données de prédiction."}
+# Vérifier la réponse de l'API
+    return render(request, "predictions.html", {
+        "prediction_data": prediction_data
+    }) 
 
-# def predict_view(request):
+
+# @login_required
+# def prediction_view(request):
 #     predictions = []
 #     if request.method == 'POST':
-#         # Lire les prédictions depuis un fichier CSV
-#         file_path = os.path.join(settings.BASE_DIR, 'weekly_predict.csv')
-#         df = pd.read_csv(file_path)
+
+#         file_path = settings.BASE_DIR / 'db.sqlite3'
+#         conn = sqlite3.connect(file_path)
+
+#         query = "SELECT DISTINCT title, prediction, image_url, synospis, casting FROM prediction_app_movies"
+
+#         df = pd.read_sql_query(query, conn)
+#         conn.close()
 
 #         for _, row in df.iterrows():
-#             prediction = Movies.objects.create(
-#                 user=request.user,
+#             prediction, created = Movies.objects.get_or_create(
+#                 # user=request.user,
 #                 title=row['title'],
-#                 release_date=datetime.now().date(),  # Ou extraire d'un champ si dispo
-#                 prediction_score=row['places_predites']
+#                 prediction=row['prediction'],
+#                 casting = row['casting'],
+#                 image_url=row['image_url'],
+#                 synospis=row['synospis'],
+                
 #             )
 #             predictions.append(prediction)
-
-#     return render(request, 'predictions.html', {'predictions': predictions})
-
-
-
+#     predictions_sorted = sorted(predictions, key=lambda x: x.prediction, reverse=True)
+#     return render(request, 'predictions.html', {'predictions': predictions_sorted})
 
 
 @login_required
@@ -75,8 +88,3 @@ def history_view(request):
         'grouped_predictions': grouped_predictions
     })
 
-
-# @login_required
-# def history_view(request):
-#     predictions = Movies.objects.filter(user=request.user).order_by('-date')
-#     return render(request, 'history.html', {'predictions': predictions})

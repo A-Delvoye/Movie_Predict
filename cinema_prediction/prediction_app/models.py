@@ -3,7 +3,10 @@ from django.db import models
 class Movies(models.Model):
     title               = models.CharField(max_length=255)
     prediction          = models.IntegerField(null=True, blank=True)
-    url_image           = models.URLField(max_length=500, null=True, blank=True)
+    release_date        = models.DateField(null=True, blank=True)
+    image_url           = models.URLField(max_length=500, null=True, blank=True)
+    synospis            = models.TextField(null=True, blank=True)
+    casting             = models.TextField(null=True, blank=True)
     # genre               = models.CharField(max_length=255)  # Format Genre1, Genre2 etc ...
     # duration            = models.IntegerField(blank=True)
     # box_office_france   = models.FloatField(null=True, blank=True)
@@ -16,7 +19,6 @@ class Movies(models.Model):
     # scenarist           = models.CharField(max_length=255, null=True, blank=True)
     # distributor         = models.CharField(max_length=255, null=True, blank=True)
     # production_year     = models.IntegerField(null=True, blank=True)
-    release_date        = models.DateField(null=True, blank=True)
     # awards              = models.IntegerField(null=True, blank=True) # tuple [prix,nominations]?
     # budget              = models.FloatField(null=True, blank=True)
     # country             = models.CharField(max_length=255, null=True, blank=True)  # Format pays1, pays 2 ...
