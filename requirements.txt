@@ -12,3 +12,4 @@ xgboost
 pandas
 cloudpickle
 gunicorn
+python-jose

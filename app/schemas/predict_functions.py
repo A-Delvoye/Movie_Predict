@@ -1,4 +1,4 @@
-import cloudpickle as pkl
+import pickle as pkl
 import pandas as pd
 import os
 import numpy as np
@@ -8,6 +8,7 @@ def load_model(model_path):
     print("LOAD MODEL")
     with open(model_path, 'rb') as f:
         bundle = pkl.load(f)
+        print("LOADED")
     return bundle
 
 
@@ -17,7 +18,7 @@ def load_weekly_scraping(data_path):
         raise FileNotFoundError("Aucun fichier de scraping trouvé !")
     csv_file = [f for f in file if f.endswith('.csv')][0]
     print(50*'*')
-    print(os.path.join(csv_file))
+    print("CSV_FILE: ", os.path.join(csv_file))
     print(data_path)
     df = pd.read_csv(data_path + '/' + os.path.join(csv_file))
     return df
@@ -25,8 +26,8 @@ def load_weekly_scraping(data_path):
 
 def data_cleaning(df, columns):
     df['predictions'] = 0
-    df['critics_rating'] = df['critics_rating'].str.replace(',', '.', regex=False)
-    df['critics_rating'] = pd.to_numeric(df['critics_rating'], errors='coerce').fillna(3)
+    # df['critics_rating'] = df['critics_rating'].str.replace(',', '.', regex=False)
+    # df['critics_rating'] = pd.to_numeric(df['critics_rating'], errors='coerce').fillna(3)
     df['duration'] = df['duration'].fillna(102)
 
     # Ajout de colonnes manquantes
@@ -90,7 +91,8 @@ def encode_casting(df, columns):
 
 def predict(model,df,columns,csv_columns):
     pred_df = df[csv_columns]
-    pred_df['prediction'] = np.round(model.predict(df[columns])/2000).astype(int)
+    pred_df['prediction'] = np.round(model.predict(df[columns])/14000).astype(int)
+    pred_df = pred_df[pred_df['year']>2023]
     pred_df = pred_df.sort_values('prediction',ascending=False).head(10)
     return pred_df
 
@@ -103,8 +105,7 @@ def start_prediction():
     csv_columns = data.columns
     cleaned_data = data_cleaning(data, columns)
     result = predict(model,cleaned_data,columns, csv_columns)
-
-    return result
+    return result#(model,cleaned_data,columns, csv_columns)
 
 
 if __name__ =="__main__":
