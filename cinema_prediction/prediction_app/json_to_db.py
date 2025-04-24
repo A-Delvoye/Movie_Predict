@@ -16,6 +16,7 @@ print('db_path :', db_path)
 # json_path = 'prediction_result.json'
 
 df = pd.read_json(json_path)
+# print(df["predictions"])
 
 # Convertir les colonnes contenant des dict ou des listes en chaînes
 for col in df.columns:

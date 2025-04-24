@@ -47,7 +47,7 @@ password = "cinema"
 #         "prediction_data": prediction_data
 #     }) 
 
-
+#VERSION SAMI SQL REQUEST
 @login_required
 def prediction_view(request):
     predictions = []

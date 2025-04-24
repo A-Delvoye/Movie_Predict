@@ -1,7 +1,7 @@
 from django.db import models
 
 class Movies(models.Model):
-    # id                  = models.IntegerField(primary_key=True)
+    id                  = models.IntegerField(primary_key=True)
     title               = models.CharField(max_length=255)
     prediction          = models.IntegerField(null=True, blank=True)
     release_date        = models.DateField(null=True, blank=True)
