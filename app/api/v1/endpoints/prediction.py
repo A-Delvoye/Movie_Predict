@@ -14,10 +14,13 @@ router = APIRouter()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 @router.post("/predict")
-async def predict(current_user: User = Depends(get_current_user)):
+# async def predict(current_user: User = Depends(get_current_user)):
+async def predict():
+    print(50*'#')
     pred_df = start_prediction()
     pred_df = pred_df.replace([np.nan, np.inf, -np.inf], None)
     return JSONResponse(content={"predictions": pred_df.to_dict(orient="records")})
+    # return JSONResponse(content={pred_df.to_dict(orient="records")})
 
 # @router.get("/top10")
 # def get_predictions():
