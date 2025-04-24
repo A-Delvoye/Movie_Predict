@@ -1,6 +1,5 @@
 import scrapy
 from moviescraper.items import MoviescraperItem
-from scrapy.crawler import CrawlerProcess
 
 class MoviespiderSpider(scrapy.Spider):
     name = "moviespider"

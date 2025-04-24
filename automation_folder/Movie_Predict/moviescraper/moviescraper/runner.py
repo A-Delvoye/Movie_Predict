@@ -51,13 +51,13 @@
 import subprocess
 import os
 from datetime import datetime
-
+print('############################')
 # Nom du spider à lancer
-spider = "moviespider"
+spider = "weekly_spider"
 
 # Chemin absolu vers le dossier contenant scrapy.cfg
 # project_root = "/opt/airflow/Movie_Predict/moviescraper"
-project_root='/home/addeche/Documents/Projets Python/scraping_allocine/automation_folder/Movie_Predict/moviescraper/'
+project_root='/home/addeche/Documents/Projets Python/scraping_allocine/automation_folder/Movie_Predict/moviescraper/moviescraper'
 # Dossier de logs (optionnel)
 # log_dir = f"/opt/airflow/logs/scrapy/{spider}"
 # os.makedirs(log_dir, exist_ok=True)
@@ -76,6 +76,16 @@ project_root='/home/addeche/Documents/Projets Python/scraping_allocine/automatio
 #     "-s", f"LOG_FILE={log_file}"
 # ]
 
+execute([
+    'scrapy',
+    'crawl',
+    spider,
+    '-o',
+    f'{spider}.csv',
+    # '-s',
+    # f'LOG_FILE={log_file}'
+])
+
 cmd = [
     "scrapy", "crawl", spider,
     "-o", 'moviespider2000_2025_test.csv'
@@ -86,8 +96,8 @@ cmd = [
 # print(f"📝 Fichier de log    : {log_file}")
 
 # Lancer la commande dans un sous-processus
-result = subprocess.run(cmd, cwd=project_root, capture_output=True, text=True)
-
+# result = subprocess.run(cmd, cwd=project_root, capture_output=True, text=True)
+print('############################')
 # Affichage résultat
 if result.returncode == 0:
     print("✅ Scrapy terminé avec succès.")

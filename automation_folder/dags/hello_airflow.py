@@ -3,7 +3,7 @@ from airflow.operators.python import PythonOperator
 from datetime import datetime
 
 with DAG("hello_airflow",
-         start_date=datetime(202, 4, 14),
+         start_date=datetime(202, 4, 22),
          schedule_interval=None,
          catchup=False) as dag:
 
