@@ -7,84 +7,84 @@ from collections import defaultdict
 from django.conf import settings
 from dotenv import load_dotenv
 import sqlite3
-import requests
 
 
-load_dotenv()
-
-API_PREDICTION_URL = "http://127.0.0.1:8001/api/v1/predict"
-API_BASE_URL = "http://127.0.0.1:8001"
-API_USER_ID = "JeremyCinema"
-email = "cinema@films.fr"
-password = "cinema"
 
 @login_required
 def prediction_view(request):
-    headers = {
-            "Content-Type": "application/json"}
-    payload = {
-        "user_id": API_USER_ID  
-    }
+    predictions = []
+    file_path = settings.BASE_DIR / 'db.sqlite3'
+    conn = sqlite3.connect(file_path)
+    cursor = conn.cursor()
 
-    try:
-    # Envoi de la requête à l'API FastAPI
-        response = requests.post(API_PREDICTION_URL, headers=headers, json = payload)
-        prediction_data = response.json()
-        print(50*'*')
-        print(prediction_data)
-        # prediction_data.to_csv('weekly.json')
-    except requests.exceptions.RequestException as e:
-        print(f"Erreur lors de l'appel à l'API : {e}")
-        prediction_data = {"error": "Impossible de récupérer les données de prédiction."}
-# Vérifier la réponse de l'API
-    return render(request, "predictions.html", {
-        "prediction_data": prediction_data
-    }) 
+    if request.method == 'POST':
+        if 'checks' in request.POST:
+            cursor.execute("UPDATE prediction_app_movies SET 'choice' = 0")
 
+            selected_movies = request.POST.getlist('checks')
+            for movie_id in selected_movies:
+                cursor.execute("UPDATE prediction_app_movies SET 'choice' = 1 WHERE id = ?", (movie_id,))
 
-# @login_required
-# def prediction_view(request):
-#     predictions = []
-#     if request.method == 'POST':
+            conn.commit()
+            return redirect('predict')
+        else:
+            query = "SELECT DISTINCT title, prediction, image_url, synospis, casting FROM prediction_app_movies"
+            df = pd.read_sql_query(query, conn)
+            for _, row in df.iterrows():
+                prediction = Movies.objects.filter(
+                    title=row['title'],
+                    prediction=row['prediction'],
+                    casting=row['casting'],
+                    image_url=row['image_url'],
+                    synospis=row['synospis'],
+                ).first()  # 1er film trouvé
+                if prediction:  
+                    predictions.append(prediction)
+    
+    else:
+        query = "SELECT DISTINCT title, prediction, image_url, synospis, casting FROM prediction_app_movies"
+        df = pd.read_sql_query(query, conn)
+        for _, row in df.iterrows():
+            prediction = Movies.objects.filter(
+                title=row['title'],
+                prediction=row['prediction'],
+                casting=row['casting'],
+                image_url=row['image_url'],
+                synospis=row['synospis'],
+            ).first()  # 1er film trouvé
+            if prediction:  
+                predictions.append(prediction)
+    
+    conn.close()
 
-#         file_path = settings.BASE_DIR / 'db.sqlite3'
-#         conn = sqlite3.connect(file_path)
-
-#         query = "SELECT DISTINCT title, prediction, image_url, synospis, casting FROM prediction_app_movies"
-
-#         df = pd.read_sql_query(query, conn)
-#         conn.close()
-
-#         for _, row in df.iterrows():
-#             prediction, created = Movies.objects.get_or_create(
-#                 # user=request.user,
-#                 title=row['title'],
-#                 prediction=row['prediction'],
-#                 casting = row['casting'],
-#                 image_url=row['image_url'],
-#                 synospis=row['synospis'],
-                
-#             )
-#             predictions.append(prediction)
-#     predictions_sorted = sorted(predictions, key=lambda x: x.prediction, reverse=True)
-#     return render(request, 'predictions.html', {'predictions': predictions_sorted})
+    return render(request, 'predictions.html', {'predictions': predictions})
 
 
 @login_required
 def history_view(request):
-    # predictions = Movies.objects.filter(user=request.user).order_by('-date')
-    predictions = Movies.objects.order_by('-release_date')
-    # Grouper par semaine (année + n° de semaine)
-    grouped_predictions = defaultdict(list)
+    history = []
+    file_path = settings.BASE_DIR / 'db.sqlite3'
+    conn = sqlite3.connect(file_path)
+    cursor = conn.cursor()
 
-    for p in predictions:
-        year, week, _ = p.release_date.isocalendar()  # isocalendar() → (année, semaine, jour)
-        grouped_predictions[f"Semaine {week} - {year}"].append(p)
+    if request.method == 'GET':
+        query = "SELECT * FROM prediction_app_movies WHERE choice = 1;"
+        df = pd.read_sql_query(query, conn)
 
-    # Trier les groupes par semaine descendante
-    grouped_predictions = dict(sorted(grouped_predictions.items(), reverse=True))
+        for _, row in df.iterrows():
+            movies = Movies.objects.filter(
+                title=row['title'],
+                prediction=row['prediction'],
+                casting=row['casting'],
+                image_url=row['image_url']
+            )
 
-    return render(request, 'prediction_app/history.html', {
-        'grouped_predictions': grouped_predictions
-    })
+            for movie in movies:
+                if movie.title not in [m.title for m in history]:
+                    history.append(movie)
+
+    conn.close()
+
+    history_sorted = sorted(history, key=lambda x: x.title, reverse=True)
+    return render(request, 'history.html', {'history': history_sorted})
 
