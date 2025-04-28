@@ -17,18 +17,23 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
-from django.contrib.auth.views import LogoutView
-from users import views as custom_views
-from users.views import home_view
+from django.contrib.auth.views import LoginView
+from prediction_app.views import home_view, LogoutView
+from django.conf import settings
+from django.conf.urls import handler404
+
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', home_view, name='home'),
     path('', include("prediction_app.urls")),
     path('accounts/', include('django.contrib.auth.urls')),
     path("__reload__/", include("django_browser_reload.urls")),
-    path('accounts/', include('users.urls')),          # Inscription
-    
-    # path('logout/', LogoutView.as_view(next_page='home'), name='logout'),
-    # path('', home_view, name='home'),  
+    path('login/', LoginView.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
+    path('', home_view, name='home'),
 
 ]
+
+if settings.DEBUG:
+    handler404 = 'views.custom_404'

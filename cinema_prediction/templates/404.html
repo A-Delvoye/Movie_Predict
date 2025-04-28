@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% comment %} {% extends "base.html" %}
 
 {% block content %}
 <div class="bg-white h-screen flex items-center justify-center">
@@ -10,4 +10,19 @@
             back to homepage</a>
     </div>
 </div>  
+{% endblock content %} {% endcomment %}
+
+{% extends "base.html" %}
+
+{% block title %}Erreur 404 - Oups{% endblock %}
+
+{% block content %}
+<div class="bg-gray-100 h-screen flex items-center justify-center px-4">
+    <div class="bg-white p-10 rounded-2xl shadow-xl max-w-xl w-full text-center">
+        <h1 class="text-5xl font-bold text-navy-800 mb-4">404</h1>
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Scène introuvable 🎬</h2>
+        <p class="text-gray-600 mb-6">Ce film n’est pas encore à l’affiche, ou la page a été coupée au montage…</p>
+        <a href="{% url 'home_view' %}" class="inline-block py-3 px-6 btn_blue">⬅ Retour à l'accueil</a>
+    </div>
+</div>
 {% endblock content %}

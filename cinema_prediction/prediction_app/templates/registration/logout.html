@@ -1,0 +1,56 @@
+
+
+{% extends "base.html" %}
+{% block title %}Mon compte{% endblock %}
+
+{% block content %}
+<div style="background-color: #f4f4f4; min-height: 100vh; padding: 3rem 1rem;">
+  <div style="max-width: 600px; margin: 0 auto; background-color: white; padding: 2rem; border-radius: 16px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);">
+
+    {% if user.is_authenticated %}
+      <h2 style="font-size: 1.75rem; margin-bottom: 1rem; color: #333;">Bonjour {{ user.username }} 👋</h2>
+      <p style="margin-bottom: 2rem; color: #555;">Vous êtes connecté à FilmPredictor. Profitez de toutes les fonctionnalités de l’application !</p>
+
+      <form action="{% url 'logout' %}" method="POST" style="text-align: center;">
+        {% csrf_token %}
+        <button type="submit" style="
+          padding: 14px 32px;
+          font-size: 18px;
+          background-color: #e53935;
+          color: white;
+          border: none;
+          border-radius: 10px;
+          cursor: pointer;
+          box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+          transition: background-color 0.3s ease;
+        " onmouseover="this.style.backgroundColor='#d32f2f'" onmouseout="this.style.backgroundColor='#e53935'">
+          🚪 Se déconnecter
+        </button>
+      </form>
+    {% else %}
+      <h2 style="font-size: 1.75rem; margin-bottom: 1rem; color: #333;">Vous êtes déconnecté</h2>
+      <p style="margin-bottom: 2rem; color: #555;">Veuillez vous connecter pour accéder aux prédictions.</p>
+      <div style="text-align: center;">
+        <a href="{% url 'login' %}" style="
+          display: inline-block;
+          padding: 12px 24px;
+          font-size: 16px;
+          background-color: #4CAF50;
+          color: white;
+          text-decoration: none;
+          border-radius: 8px;
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+          transition: background-color 0.3s ease;
+        " onmouseover="this.style.backgroundColor='#45A049'" onmouseout="this.style.backgroundColor='#4CAF50'">
+          🔐 Connexion
+        </a>
+      </div>
+    {% endif %}
+
+  </div>
+</div>
+{% endblock %}
+
+
+
+
