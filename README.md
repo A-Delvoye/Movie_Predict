@@ -59,32 +59,33 @@ Movie_Predict/
 ├── data/                 # Données brutes et traitées (scraping IMDb)
 ├── docker-compose.yaml   # Orchestration multi-services
 └── README.md
+```
 
-🎯 Objectifs Métier
+## 🎯 Objectifs Métier
 
-    Estimer les entrées des films à venir (avant leur sortie en salle)
+    - Estimer les entrées des films à venir (avant leur sortie en salle)
 
-    Optimiser la gestion des salles, la rentabilité et la planification
+    - Optimiser la gestion des salles, la rentabilité et la planification
 
-    Offrir une visualisation claire et actionnable au gérant
+    - Offrir une visualisation claire et actionnable au gérant
 
-🧱 Architecture
+## 🧱 Architecture
 
-    🧠 Modèle ML de régression (XGBoost / scikit-learn)
+    - 🧠 Modèle ML de régression (XGBoost / scikit-learn)
 
-    🔌 API FastAPI exposant les prédictions
+    - 🔌 API FastAPI exposant les prédictions
 
-    🕸️ Scraping hebdomadaire automatisé (Airflow + Scrapy)
+    - 🕸️ Scraping hebdomadaire automatisé (Airflow + Scrapy)
 
-    🌐 Interface Django / Tailwind pour le dashboard
+    - 🌐 Interface Django / Tailwind pour le dashboard
 
-    💾 BDD analytique (prédiction + données cinéma)
+    - 💾 BDD analytique (prédiction + données cinéma)
 
-    🧱 Docker pour tous les services (déploiement prod)
+    - 🧱 Docker pour tous les services (déploiement prod)
 
-    ☁️ Azure ML Studio & Azure SQL (optionnel / budgeté)
+    - ☁️ Azure ML Studio & Azure SQL (optionnel / budgeté)
 
-🚀 Installation
+## 🚀 Installation
 1. Cloner le repo
 
 git clone https://github.com/ton-org/Movie_Predict.git
@@ -106,7 +107,7 @@ python manage.py runserver
 cd api
 uvicorn main:app --reload --port 8001
 
-🔧 Configuration
+## 🔧 Configuration
 Créer un fichier .env à la racine de chaque composant (api, django_app, airflow), avec par exemple :
 
 DATABASE_URL=sqlite:///./db.sqlite3
@@ -114,7 +115,7 @@ SECRET_KEY=...
 JWT_ALGORITHM=HS256
 
 
-🏃 Utilisation
+## 🏃 Utilisation
 
     🔁 Scraping IMDB hebdomadaire via Airflow
 
@@ -130,7 +131,7 @@ JWT_ALGORITHM=HS256
 
     🔎 Historique des prédictions & performance du modèle
 
-📊 Fonctionnalités
+## 📊 Fonctionnalités
 | Module             | Description                           |
 | ------------------ | ------------------------------------- |
 | `Airflow`          | Pipeline scraping et prédiction       |
@@ -142,14 +143,14 @@ JWT_ALGORITHM=HS256
 | `SQLite`           | Historique des prédictions            |
 | `Tailwind`         | UI moderne et responsive              |
 
-📉 Exemple de prédictions
+## 📉 Exemple de prédictions
 | 🎬 Film                      | 🎯 Estimation entrées | 📅 Date de sortie |
 | ---------------------------- | --------------------- | ----------------- |
 | **Deadpool & Wolverine**     | 1 200 000             | 2025-07-24        |
 | **Le Comte de Monte Cristo** | 850 000               | 2025-07-10        |
 | **Vice-Versa 2**             | 2 100 000             | 2025-06-19        |
 
-💰 Estimation des Coûts Cloud
+## 💰 Estimation des Coûts Cloud
 | Composant             | Ressource Azure             | Coût estimé / mois |
 | --------------------- | --------------------------- | ------------------ |
 | Azure App Service     | API FastAPI déployée        | \~20 €             |
@@ -157,3 +158,57 @@ JWT_ALGORITHM=HS256
 | Azure SQL Database    | BDD historique + analytique | \~15 €             |
 | Azure VM pour Airflow | Automatisation (Linux B1s)  | \~25 €             |
 | **Total estimé**      |                             | **\~110 € / mois** |
+
+## 📬Contact
+
+Pour toute question ou suggestion :
+
+### ✉️ delvoyeadf@gmail.com  
+
+<p align="left">
+  <img src="prime_assurance/static/images/logo_entreprise.png" alt="Logo de l'Entreprise" width="300" height="auto">
+</p>
+
+<div>
+<h4>Antoine Delvoye </h4>
+<a href = "mailto: delvoyeadf@gmail.com"><img loading="lazy" src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" target="_blank"></a>
+<a href="www.linkedin.com/in/antoine-delvoye1" target="_blank">
+  <img loading="lazy" src="https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn Badge" />
+</a>  
+<a href="https://github.com/A-Delvoye" target="_blank">
+  <img loading="lazy" src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white">
+</a>
+</div>
+
+<div>
+<h4>Sami Kabdani </h4>
+<a href = "mailto: samikabdani.pro@gmail.com"><img loading="lazy" src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" target="_blank"></a>
+<a href="https://www.linkedin.com/in/hacene-z" target="_blank">
+  <img loading="lazy" src="https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn Badge" />
+</a>  
+<a href="https://github.com/Sami-Kbdn" target="_blank">
+  <img loading="lazy" src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white">
+</a>
+</div>
+
+<div>
+<h4>Gauthier Vannesson </h4>
+<a href = "mailto: g.vannesson@gmail.com"><img loading="lazy" src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" target="_blank"></a>
+<a href="https://www.linkedin.com/in/gauthier-vannesson-6444a2179/" target="_blank">
+  <img loading="lazy" src="https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn Badge" />
+</a>  
+<a href="https://github.com/gvannesson" target="_blank">
+  <img loading="lazy" src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white">
+</a>
+</div>
+
+<div>
+<h4>David Scott </h4>
+<a href = "mailto: david.scott.2875@gmail.com"><img loading="lazy" src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" target="_blank"></a>
+<a href="https://www.linkedin.com/in/david-scott-051a132b5/" target="_blank">
+  <img loading="lazy" src="https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn Badge" />
+</a>  
+<a href="https://github.com/Daviddavid-sudo" target="_blank">
+  <img loading="lazy" src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white">
+</a>
+</div>
