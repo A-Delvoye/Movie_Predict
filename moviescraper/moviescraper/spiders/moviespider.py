@@ -5,14 +5,14 @@ from moviescraper.items import MoviescraperItem
 class MoviespiderSpider(scrapy.Spider):
     name = "moviespider"
     allowed_domains = ["www.allocine.fr"]
-    start_urls = ["https://www.allocine.fr/films/decennie-2020/"]
+    start_urls = ["https://www.allocine.fr/film/agenda/sem-2025-04-09/"]
 
 
 
     def parse(self, response):
-        number_of_pages = int(response.css('div.pagination-item-holder span.button-md.item::text').getall()[-1])
-        print('################################')
-        print(number_of_pages)
+        # number_of_pages = int(response.css('div.pagination-item-holder span.button-md.item::text').getall()[-1])
+        # print('################################')
+        # print(number_of_pages)
         movies = response.css('div.card.entity-card.entity-card-list.cf')
 
 
@@ -40,17 +40,17 @@ class MoviespiderSpider(scrapy.Spider):
             )
 
 
-        for i in range(number_of_pages):
-            url_of_the_page = response.url
-            print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
-            print(url_of_the_page)
-            if "?" in url_of_the_page:
-                next_page_url = url_of_the_page + f'?page={i+2}'
-                yield response.follow(next_page_url, callback = self.parse)
+        # for i in range(number_of_pages):
+        #     url_of_the_page = response.url
+        #     print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+        #     print(url_of_the_page)
+        #     if "?" in url_of_the_page:
+        #         next_page_url = url_of_the_page + f'?page={i+2}'
+        #         yield response.follow(next_page_url, callback = self.parse)
 
-            else:
-                next_page_url = url_of_the_page + f'?page={i+2}'
-                yield response.follow(next_page_url, callback = self.parse)
+        #     else:
+        #         next_page_url = url_of_the_page + f'?page={i+2}'
+        #         yield response.follow(next_page_url, callback = self.parse)
 
     def parse_trailer(self, response):
         movie = response.css('div.media-info-item.icon.icon-eye')
@@ -81,29 +81,30 @@ class MoviespiderSpider(scrapy.Spider):
         movieItem['country']= country
         movieItem['scenario_par']=producer
         movieItem['critics_rating']=critics_rating
-        yield response.follow(
-                url='https://www.allocine.fr'+trailer_url,
-                callback= self.parse_trailer,
-                meta={'item': movieItem}
-            )
+        yield movieItem
+        # response.follow(
+        #         url='https://www.allocine.fr'+trailer_url,
+        #         callback= self.parse_trailer,
+        #         meta={'item': movieItem}
+        #     )
 
-    def parse_box_office(self, response):
-        movieItem = response.meta['item']
-        tables = response.css('section.section')
-        for index, table in enumerate(tables):
-            first_week = table.css('td.responsive-table-column.second-col.col-bg::text').get()
-            if first_week:
-                n_first_week = first_week.strip().replace(" ", "")
-            else:
-                n_first_week = ""
+    # def parse_box_office(self, response):
+    #     movieItem = response.meta['item']
+    #     tables = response.css('section.section')
+    #     for index, table in enumerate(tables):
+    #         first_week = table.css('td.responsive-table-column.second-col.col-bg::text').get()
+    #         if first_week:
+    #             n_first_week = first_week.strip().replace(" ", "")
+    #         else:
+    #             n_first_week = ""
 
-            if index == 1:
-                France_first_week = n_first_week
-            elif index ==2:
-                US_first_week = n_first_week
+    #         if index == 1:
+    #             France_first_week = n_first_week
+    #         elif index ==2:
+    #             US_first_week = n_first_week
                  
-        movieItem['France_first_week'] = France_first_week
-        movieItem['US_first_week'] = US_first_week
+    #     movieItem['France_first_week'] = France_first_week
+    #     movieItem['US_first_week'] = US_first_week
 
-        yield movieItem  
+        # yield movieItem  
 

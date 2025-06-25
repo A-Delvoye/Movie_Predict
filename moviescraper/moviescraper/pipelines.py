@@ -8,24 +8,24 @@
 from itemadapter import ItemAdapter
 
 
-class MoviescraperPipeline:
-    def process_item(self, item, spider):
-        adapter = ItemAdapter(item)
-        duration = adapter.get('duration')[0]
-        duration = duration.strip('min')
-        hour, sep, minutes = duration.partition('h ')
-        duration = int(hour)*60+int(minutes)
-        adapter['duration']= duration
+# class MoviescraperPipeline:
+#     def process_item(self, item, spider):
+#         adapter = ItemAdapter(item)
+#         duration = adapter.get('duration')[0]
+#         duration = duration.strip('min')
+#         hour, sep, minutes = duration.partition('h ')
+#         duration = int(hour)*60+int(minutes)
+#         adapter['duration']= duration
 
-        trailer_view = adapter.get('trailer_views')
-        print(trailer_view)
-        print('~~~~~~~~~~~~~~~~~~~~~~~~~')
-        trailer_view=trailer_view.strip(' vues')
-        head, sep, tail= trailer_view.partition('\u202f')
-        print(head)
-        print('#######################')
-        print(tail)
-        adapter['trailer_views']=int(head+tail)
+#         trailer_view = adapter.get('trailer_views')
+#         print(trailer_view)
+#         print('~~~~~~~~~~~~~~~~~~~~~~~~~')
+#         trailer_view=trailer_view.strip(' vues')
+#         head, sep, tail= trailer_view.partition('\u202f')
+#         print(head)
+#         print('#######################')
+#         print(tail)
+#         adapter['trailer_views']=int(head+tail)
 
-        return item
+#         return item
 
