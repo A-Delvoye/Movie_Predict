@@ -52,13 +52,19 @@ L’objectif est d’aider les gérants de salles à anticiper les performances 
 
 ```bash
 Movie_Predict/
-├── api/                  # FastAPI exposant le modèle ML (predictions)
-├── airflow/              # Pipelines de scraping & prédictions automatisées
-├── model/                # Entraînement, sauvegarde, MLflow (AzureML)
-├── django_app/           # Interface web (Dashboard & Historique)
-├── data/                 # Données brutes et traitées (scraping IMDb)
-├── docker-compose.yaml   # Orchestration multi-services
-└── README.md
+├── automation_folder/     # Automatisation du scraping et des prédictions (ex: Airflow, Cron, scripts de planification)
+├── cinema_prediction/     # API FastAPI pour exposer les prédictions du modèle
+├── data_scraping/         # Traitement des données extraites, nettoyage, enrichissement, et feature engineering
+├── moviescraper/          # Projet Scrapy initial pour le scraping d'IMDb
+├── weekly_scraping/       # Scraping hebdomadaire pour les nouveaux films à prédire
+│
+├── .gitignore             # Fichiers/dossiers ignorés par Git
+├── README.md              # Documentation du projet (ce fichier)
+├── all_workflow.py        # Script de coordination scraping + prédiction (pipeline manuel ou déclenché)
+├── requirements.txt       # Dépendances Python du projet
+├── run_scraping.py        # Point d’entrée pour lancer le scraping (exécution directe)
+├── scrapy.cfg             # Configuration du projet Scrapy
+
 ```
 
 ## 🎯 Objectifs Métier
