@@ -1,0 +1,33 @@
+<header class="bg-[#fefefe] text-[#222] py-6 shadow-md border-b border-gray-200">
+    <div class="container mx-auto flex justify-between items-center px-6">
+  
+      <!-- Logo + Titre -->
+      <div class="flex items-center space-x-4">
+        <span class="text-3xl">🎬</span>
+        <h1 class="text-2xl font-bold tracking-wide font-mono" style="color:rgb(70, 86, 38);">
+          New is always better
+        </h1>
+      </div>
+  
+      <!-- Navigation -->
+      <nav class="space-x-6 text-lg font-medium">
+        <a href="{% url 'home' %}" class="text-[#333] hover:text-[#465626] transition duration-200 ease-in-out">Accueil</a>
+        <a href="{% url 'predict' %}" class="text-[#333] hover:text-[#465626] transition duration-200 ease-in-out">Prédictions</a>
+        <a href="{% url 'history' %}" class="text-[#333] hover:text-[#465626] transition duration-200 ease-in-out">Historique</a>
+  
+        {% if user.is_authenticated %}
+          <a href="{% url 'logout' %}" class="text-[#465626] hover:text-[#BC3030] transition duration-200 ease-in-out">Se déconnecter</a>
+        {% else %}
+          <a href="{% url 'login' %}" class="text-[#465626] hover:text-[#388E3C] transition duration-200 ease-in-out">Se connecter</a>
+        {% endif %}
+      </nav>
+  
+    </div>
+  </header>
+  
+
+
+
+
+
+

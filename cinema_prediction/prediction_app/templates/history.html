@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block title %}Historique des prédictions{% endblock %}
+{% block content %}
+
+<div style="background-color: #f4f4f4; min-height: 100vh; padding: 3rem 1rem;">
+  <div style="max-width: 1000px; margin: 0 auto;">
+    <h1 style="
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      text-align: center;
+      color: #333;
+    ">
+      📜 Historique des prédictions
+    </h1>
+
+    {% if history %}
+    <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 2rem;">
+      {% for movie in history %}
+      <li style="
+        display: flex;
+        align-items: flex-start;
+        gap: 20px;
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 16px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      ">
+        <img src="{{ movie.image_url }}" alt="Affiche de {{ movie.title }}" style="
+          width: 150px;
+          height: auto;
+          border-radius: 8px;
+          object-fit: cover;
+          flex-shrink: 0;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        ">
+        <div style="flex: 1;">
+          <h2 style="margin: 0; font-size: 1.5rem; color: #333;">{{ movie.title }}</h2>
+          <p style="margin: 10px 0; font-size: 1rem; color: #444;"><strong>Places prédites :</strong> {{ movie.prediction }}</p>
+          <p style="margin: 10px 0; font-size: 1rem; color: #444;"><strong>Casting :</strong> {{ movie.casting }}</p>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+
+    {% else %}
+    <p style="text-align: center; font-size: 1.1rem; color: #777; margin-top: 2rem;">
+      Aucun historique pour le moment.
+    </p>
+    {% endif %}
+
+    <div style="text-align: center; margin-top: 2.5rem;">
+      <a href="{% url 'home' %}" style="
+        display: inline-block;
+        padding: 12px 24px;
+        font-size: 16px;
+        background-color: #FF9800;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        transition: background-color 0.3s ease;
+      " onmouseover="this.style.backgroundColor='#F57C00'" onmouseout="this.style.backgroundColor='#FF9800'">
+        ⬅️ Retour à l’accueil
+      </a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+
+
+

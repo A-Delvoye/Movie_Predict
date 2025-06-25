@@ -173,6 +173,8 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
-#file export
+
+#files
 *.csv
-weekly_spider.csv
+*.sqlite3
+*.json
