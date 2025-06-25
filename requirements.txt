@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+sqlmodel
+passlib[bcrypt]
+pyjwt
+python-dotenv
+pydantic[email]
+alembic
+requests
+dotenv
+xgboost
+pandas
+cloudpickle
+gunicorn
+python-jose
