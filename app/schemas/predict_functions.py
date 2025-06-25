@@ -92,8 +92,12 @@ def encode_casting(df, columns):
 def predict(model,df,columns,csv_columns):
     pred_df = df[csv_columns]
     pred_df['prediction'] = np.round(model.predict(df[columns])/14000).astype(int)
+<<<<<<< HEAD
     pred_df['selection'] = 0
     pred_df = pred_df[pred_df['year']>2023]
+=======
+    pred_df = pred_df[pred_df['production_year']>2023]
+>>>>>>> origin/MP-21-Endpoint
     pred_df = pred_df.sort_values('prediction',ascending=False).head(10)
     return pred_df
 

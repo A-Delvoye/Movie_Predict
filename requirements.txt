@@ -13,3 +13,6 @@ pandas
 cloudpickle
 gunicorn
 python-jose
+django
+tailwind
+django_browser_reload
